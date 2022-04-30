@@ -2,19 +2,88 @@ package br.ufma.ldsi;
 
 import com.sun.source.tree.BinaryTree;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 public class Main {
 
+
+
+
     public static void main(String[] args) {
 
 
-        questao1();
+//        questao1();
+        questao2();
+
 
 
     }
+
+
+    private static void questao2() { // nlogn + logn + n + n + n
+
+        int [] entrada =    {12, 1, 10, 50, 5, 15, 45};
+        int n = 3;
+        int v = 5;
+
+        mergeSort(entrada, entrada.length); // O(nlogn)
+        List<Integer> tampas_list = Arrays.stream(entrada).boxed().toList();
+        int near_V = binarySearchNearValue(entrada, v); // O(logn)
+        System.out.println(Arrays.toString(entrada));
+
+        System.out.println(near_V);
+
+        List<Integer> menores = new ArrayList();
+        List<Integer> maiores = new ArrayList();
+
+        for (int i = 0; i < entrada.length; i++) { // O(n)
+            if(entrada[i]< near_V){
+                menores.add(entrada[i]);
+            }if(entrada[i]> near_V){
+                maiores.add(entrada[i]);
+            }
+        }
+
+        for (int i = 0; i < n; i++) { // O(n)
+            System.out.println(i);
+
+        }
+
+        System.out.println(menores);
+        System.out.println(maiores);
+
+
+    }
+    public static int binarySearchNearValue(int[] a, int value) { //https://stackoverflow.com/questions/30245166/find-the-nearest-closest-value-in-a-sorted-list
+
+        if(value < a[0]) {
+            return a[0];
+        }
+        if(value > a[a.length-1]) {
+            return a[a.length-1];
+        }
+
+        int lo = 0;
+        int hi = a.length - 1;
+
+        while (lo <= hi) {
+            int mid = (hi + lo) / 2;
+
+            if (value < a[mid]) {
+                hi = mid - 1;
+            } else if (value > a[mid]) {
+                lo = mid + 1;
+            } else {
+                return a[mid];
+            }
+        }
+        // lo == hi + 1
+        return (a[lo] - value) < (value - a[hi]) ? a[lo] : a[hi];
+    }
+
 
     public static void questao1(){ // nlogn * (n * logn) = O(2nlogn)
         int [] potes =    {12, 1, 10, 50, 5, 15, 45};
@@ -29,7 +98,7 @@ public class Main {
 
         for (int i = 0; i < potes.length; i++) { // O(n)
             int pote = potes[i];
-            int index_tampa = Collections.binarySearch(tampas_list, pote); // O(logn)
+            int index_tampa = Collections.binarySearch(tampas_list, pote); // O(logn) - implementar isso
             potes_ordenadas[index_tampa] = tampas[index_tampa];
         }
 
